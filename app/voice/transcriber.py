@@ -19,6 +19,7 @@ class VoiceTranscriber:
         max_seconds: float = 12.0,
     ):
         self.sample_rate = sample_rate
+        self.language = language
         self.silence_seconds = silence_seconds
         self.max_seconds = max_seconds
         self.model = WhisperModel(model_size, device="cpu", compute_type="int8")
