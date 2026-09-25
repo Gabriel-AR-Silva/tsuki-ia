@@ -1,4 +1,5 @@
 from app.assistant_service import AssistantService
+from app.core.coordinator import TsukiCoordinator
 
 
 HELP_TEXT = """
@@ -13,9 +14,12 @@ Comandos:
 
 
 def main():
+    # AssistantService aquece o modelo na inicialização.
     assistant = AssistantService()
+    coordinator = TsukiCoordinator(assistant)
 
-    print("Tsuki MVP iniciado.")
+    print("Tsuki Core iniciado.")
+    print("Terminal disponível. Voz permanece em standby até 'Tsuki Turn On'.")
 
     while True:
         try:
@@ -36,8 +40,11 @@ def main():
             continue
 
         try:
-            response = assistant.process_message(message)
-            print(f"Tsuki > {response}\n")
+            # Terminal não exige ativação por voz. Ele usa o mesmo Core,
+            # mas continua disponível mesmo com a escuta em standby.
+            response = coordinator.handle(message, require_active=False)
+            if response:
+                print(f"Tsuki > {response}\n")
         except Exception as exc:
             print(f"Tsuki > Erro: {exc}\n")
 
