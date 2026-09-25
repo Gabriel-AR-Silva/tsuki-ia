@@ -872,4 +872,4 @@ class AssistantService:
                 "response": raw_response,
                 "should_save": False,
                 "memory": None
-            }''
+            }
