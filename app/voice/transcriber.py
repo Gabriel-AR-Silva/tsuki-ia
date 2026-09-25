@@ -12,7 +12,7 @@ class VoiceTranscriber:
 
     def __init__(
         self,
-        model_size: str = "tiny",
+        model_size: str = "base",
         language: str = "pt",
         sample_rate: int = 16000,
         silence_seconds: float = 1.2,
@@ -20,6 +20,7 @@ class VoiceTranscriber:
     ):
         self.sample_rate = sample_rate
         self.language = language
+        self.initial_prompt = "Tsuki. Tsuki Turn On. Tsuki Turn Off. Assistente virtual Tsuki, comandos em português do Brasil."
         self.silence_seconds = silence_seconds
         self.max_seconds = max_seconds
         self.model = WhisperModel(model_size, device="cpu", compute_type="int8")
@@ -90,6 +91,7 @@ class VoiceTranscriber:
             segments, _ = self.model.transcribe(
                 path,
                 language=self.language,
+                initial_prompt=self.initial_prompt,
                 vad_filter=True,
                 beam_size=1,
             )
